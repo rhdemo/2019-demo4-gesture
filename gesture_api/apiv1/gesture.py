@@ -1,5 +1,5 @@
 import json
-import uuid
+import time
 
 from flask import jsonify, request, abort
 from gesture_api.apiv1 import apiv1, storage
@@ -11,16 +11,23 @@ def create_gesture():
         return jsonify({})
 
     body = json.loads(request.data)
-    label = body.get('label') or 'unknown_gesture'
-    probability = 100 if body.get('label') else 0
-    object_id = str(uuid.uuid4())
-    storage.write_dict(body, f'{label}/{object_id}')
-    print(f'{label}/{object_id}')
-    print(body)
-    gesture_obj = {
-        'label': label,
-        'probability': probability
-    }
+    store_data(body)
+    return jsonify(classify_gesture(body))
 
-    return jsonify(gesture_obj)
+
+def store_data(body):
+    label = body.get('gesture') or 'unknown_gesture'
+    if not label:
+        return  # don't store
+
+    time_num = int(round(time.time() * 1000))
+    player_id = body.get('playerId') or 'unknown_player'
+    storage.write_dict(body, f'{label}/{time_num}-{player_id}')
+
+
+def classify_gesture(body):
+    return {
+        'gesture': body.get('gesture') or 'unknown_gesture',
+        'probability': 100 if body.get('label') else 0
+    }
 
