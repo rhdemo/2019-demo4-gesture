@@ -28,8 +28,6 @@ class S3Store:
         for bucket in self._s3.buckets.all():
             print(bucket.name)
 
-        self.write_dict({'hello': 'world', 'time': strftime("%Y-%m-%d %H:%M:%S", gmtime())}, 'wtf/hello.json')
-
     def write_dict(self, data: dict, object_key: str) -> dict:
         serialized_data = json.dumps(data, sort_keys=True, separators=(',', ': '), indent=2).encode()
         key = os.path.join(self.prefix, object_key)
