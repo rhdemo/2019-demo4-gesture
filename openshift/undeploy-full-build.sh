@@ -3,7 +3,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source "${DIR}/../.secrets"
+[[ -f "${DIR}/../.secrets" ]] && source "${DIR}/../.secrets"
+
+SECRET_NAME=demo4-scm-key
 
 oc process -f "${DIR}/deployment.yml" \
   -p S3_ENDPOINT=${S3_ENDPOINT} \
@@ -14,3 +16,5 @@ oc process -f "${DIR}/deployment.yml" \
   -p S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY} \
   -p SECRET_KEY=${SECRET_KEY} \
   | oc delete -f -
+
+oc delete secret ${SECRET_NAME}
