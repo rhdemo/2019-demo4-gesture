@@ -25,9 +25,6 @@ class S3Store:
                                   aws_secret_access_key=os.environ.get('S3_SECRET_ACCESS_KEY'),
                                   region_name=os.environ.get('S3_REGION'))
 
-        for bucket in self._s3.buckets.all():
-            print(bucket.name)
-
     def write_dict(self, data: dict, object_key: str) -> dict:
         serialized_data = json.dumps(data, sort_keys=True, separators=(',', ': '), indent=2).encode()
         key = os.path.join(self.prefix, object_key)
