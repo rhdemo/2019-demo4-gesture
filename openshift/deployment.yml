@@ -11,6 +11,9 @@ parameters:
   - name: APPLICATION_NAME
     value: 'demo4-gesture'
     required: true
+  - name: REPLICAS
+    value: "1"
+    required: true
   - name: PORT
     value: '8080'
     required: true
@@ -18,7 +21,7 @@ parameters:
     value: '0.0.0.0'
     required: true
   - name: IMAGE_REPOSITORY
-    displayName: Image Repository (quay.io/redhatdemo/demo4-gesture:latest)
+    displayName: Image Repository
     value: quay.io/redhatdemo/demo4-gesture:latest
     required: true
   - name: SECRET_KEY
@@ -29,29 +32,29 @@ parameters:
     description: endpoint URL for s3 service
     displayName: S3 Endpoint
     value: 'https://s3.amazonaws.com'
-    required: true
+    required: false
   - name: S3_REGION
     description: AWS Region
     displayName: AWS Region
     value: 'us-east-1'
-    required: true
+    required: false
   - name: S3_BUCKET
     description: Bucket name for s3
     displayName: S3 Bucket
-    required: true
+    required: false
   - name: S3_PREFIX
     description: Prefix to prepend to file keys in s3 (top level directory)
     displayName: S3 Prefix
     value: ''
-    required: true
+    required: false
   - name: S3_ACCESS_KEY_ID
     description: S3 Access Key ID with read and write permissions
     displayName: S3 Access Key ID
-    required: true
+    required: false
   - name: S3_SECRET_ACCESS_KEY
     description: S3 Secret Access Key
     displayName: S3 Secret Access Key
-    required: true
+    required: false
 
 objects:
   - apiVersion: v1
@@ -63,6 +66,7 @@ objects:
       S3_ACCESS_KEY_ID: "${S3_ACCESS_KEY_ID}"
       S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY}"
       S3_ENDPOINT: "${S3_ENDPOINT}"
+      S3_REGION: "${S3_REGION}"
       S3_BUCKET: "${S3_BUCKET}"
       S3_PREFIX: "${S3_PREFIX}"
       SECRET_KEY: "${SECRET_KEY}"
@@ -75,7 +79,7 @@ objects:
         deploymentConfig: ${APPLICATION_NAME}
         app: ${APPLICATION_NAME}
     spec:
-      replicas: 5
+      replicas: ${REPLICAS}
       selector:
         deploymentConfig: ${APPLICATION_NAME}
       strategy:
@@ -126,17 +130,4 @@ objects:
           targetPort: 8080
       selector:
         deploymentConfig: ${APPLICATION_NAME}
-
-  - apiVersion: v1
-    kind: Route
-    metadata:
-      labels:
-        app: ${APPLICATION_NAME}
-      name: ${APPLICATION_NAME}
-    spec:
-      port:
-        targetPort: 8080-tcp
-      to:
-        kind: Service
-        name: ${APPLICATION_NAME}
 

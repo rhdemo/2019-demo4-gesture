@@ -12,7 +12,7 @@ export S3_BUCKET=$S3_BUCKET
 export S3_PREFIX=$S3_PREFIX
 
 export SECRET_KEY="LocalRun"
-export SERVER_PORT=8083
+export SERVER_PORT=8084
 export FLASK_DEBUG=true
 
 source venv/bin/activate

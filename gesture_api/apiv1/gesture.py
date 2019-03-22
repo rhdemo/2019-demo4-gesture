@@ -16,7 +16,7 @@ def create_gesture():
 
 
 def store_data(body):
-    label = body.get('gesture') or 'unknown_gesture'
+    label = body.get('gesture')
     if not label:
         return  # don't store
 
