@@ -3,8 +3,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-[[ -f "${DIR}/../.secrets" ]] && source "${DIR}/../.secrets"
-
 SECRET_NAME=demo4-scm-key
 SECRET=$(oc get secret ${SECRET_NAME} 2>/dev/null)
 

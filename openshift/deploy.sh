@@ -3,8 +3,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source "${DIR}/../.secrets"
-
 oc process -f "${DIR}/deployment.yml" \
   -p S3_ENDPOINT=${S3_ENDPOINT} \
   -p S3_REGION=${S3_REGION} \
