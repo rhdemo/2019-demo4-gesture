@@ -12,7 +12,7 @@ def create_training():
 
     body = json.loads(request.data)
     store_data(body)
-    return {}
+    return jsonify({})
 
 
 def store_data(body):
