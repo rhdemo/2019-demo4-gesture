@@ -21,5 +21,5 @@ else:
 
 apiv1 = Blueprint('apiv1', __name__)
 
-from gesture_api.apiv1 import errors, status, gesture, training
+from gesture_api.apiv1 import errors, status, predict, training
 
